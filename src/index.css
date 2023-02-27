@@ -13,3 +13,150 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+div,
+span,
+object,
+iframe,
+figure,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+code,
+em,
+img,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+b,
+u,
+i,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+main,
+canvas,
+embed,
+footer,
+header,
+nav,
+section,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  text-size-adjust: none;
+}
+
+footer,
+header,
+nav,
+section,
+main {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+input {
+  -webkit-appearance: none;
+  border-radius: 0;
+}
+#root {
+  box-sizing: border-box;
+  padding: 0 30px;
+}
+img {
+  object-fit: cover;
+  padding: 5px;
+  border: 1px solid blue;
+  margin: 0;
+}
+header {
+  padding: 20px;
+  border: 1px solid blue;
+  display: flex;
+  justify-content: center;
+}
+button {
+  display: block;
+  margin: 5px auto;
+  width: 80px;
+  border: 1px solid blue;
+  background-color: blue;
+}
+button :hover {
+  cursor: pointer;
+}
+input {
+  padding-left: 10px;
+  border: 1px solid blue;
+}
+input:hover {
+  background-color: rgba(0, 0, 255, 0.315);
+}
+ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+li {
+  margin: 5px;
+}
