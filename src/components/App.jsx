@@ -79,7 +79,7 @@ const App = () => {
           Load more
         </button>
       )}
-      {search && items.length === 0 && <p>no photos...</p>}
+      {search && items.length === 0 && <p>no photo...</p>}
     </div>
   );
 };
