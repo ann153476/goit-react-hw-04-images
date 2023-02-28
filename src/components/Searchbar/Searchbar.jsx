@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import s from '../styles.module.css';
-console.log(s);
+
 class Searchbar extends Component {
   state = {
     search: '',
