@@ -8,6 +8,8 @@ import Searchbar from './Searchbar/Searchbar';
 
 import ImageGallery from './ImageGallery/ImageGalery';
 
+import s from './styles.module.css';
+
 class App extends Component {
   state = {
     items: [],
@@ -25,7 +27,6 @@ class App extends Component {
       this.setState({ loading: true });
       const { data } = await getImages(search, page);
       this.setState({ items: [...items, ...data.hits] });
-      console.log(data);
       if (data.hits.length < 12) {
         this.setState({ loadMore: false });
       }
@@ -74,7 +75,7 @@ class App extends Component {
       loadMore,
     } = this.state;
     return (
-      <>
+      <div className={s.App}>
         {showModal && (
           <Modal onClose={this.onCloseModal}>
             <img src={largeImageURL} alt="" width="600" />
@@ -83,13 +84,15 @@ class App extends Component {
         {loading && <p>...Loading</p>}
         {error && <p>{error}</p>}
         <Searchbar onSubmit={this.updateSearch} />
-        <ImageGallery items={items} showModal={this.showModal} />
-        {search && loadMore ? (
-          <button onClick={this.onLoadMore}>Load more</button>
-        ) : (
-          <></>
+        {items.length > 0 && (
+          <ImageGallery items={items} showModal={this.showModal} />
         )}
-      </>
+        {search && loadMore && (
+          <button onClick={this.onLoadMore} className={s.Button}>
+            Load more
+          </button>
+        )}
+      </div>
     );
   }
 }
