@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 
 import { getImages } from 'api/posts';
 
@@ -10,91 +10,78 @@ import ImageGallery from './ImageGallery/ImageGalery';
 
 import s from './styles.module.css';
 
-class App extends Component {
-  state = {
-    items: [],
-    loading: false,
-    error: null,
-    search: '',
-    page: 1,
-    showModal: false,
-    largeImageURL: '',
-    loadMore: true,
-  };
-  async fetchPosts() {
-    try {
-      const { search, page, items } = this.state;
-      this.setState({ loading: true });
-      const { data } = await getImages(search, page);
-      this.setState({ items: [...items, ...data.hits] });
-      if (data.hits.length < 12) {
-        this.setState({ loadMore: false });
+const App = () => {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [largeImageURL, setLargeImageURL] = useState('');
+  const [loadMore, setLoadMore] = useState(true);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const { data } = await getImages(search, page);
+        setItems(prevItems => [...prevItems, ...data.hits]);
+        if (data.hits.length < 12) {
+          setLoadMore(false);
+        }
+      } catch ({ response }) {
+        setError({
+          error: response.data.message || 'EERRRRORRR',
+        });
+      } finally {
+        setLoading(false);
       }
-    } catch ({ response }) {
-      this.setState({
-        error: response.data.message || 'EERRRRORRR',
-      });
-    } finally {
-      this.setState({ loading: false });
+    };
+    if (search) {
+      fetchPosts();
     }
-  }
+  }, [search, page]);
 
-  updateSearch = search => {
-    this.setState({ search, page: 1, items: [] });
+  const updateSearch = search => {
+    setSearch(search);
+    setPage(1);
+    setItems([]);
   };
 
-  componentDidUpdate(_, prevState) {
-    const { search, page } = this.state;
-    if (search !== prevState.search || page !== prevState.page) {
-      this.fetchPosts();
-    }
-  }
-
-  onLoadMore = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }));
-  };
-  //largeImageURL модалка, webformatURL маленька картинка,page є
-  showModal = largeImageURL => {
-    this.setState({
-      showModal: true,
-      largeImageURL,
-    });
+  const onLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
   };
 
-  onCloseModal = () => {
-    this.setState({ showModal: false });
+  const onshowModal = largeImageURL => {
+    setShowModal(true);
+    setLargeImageURL(largeImageURL);
   };
-  render() {
-    const {
-      items,
-      loading,
-      error,
-      search,
-      showModal,
-      largeImageURL,
-      loadMore,
-    } = this.state;
-    return (
-      <div className={s.App}>
-        {showModal && (
-          <Modal onClose={this.onCloseModal}>
-            <img src={largeImageURL} alt="" width="600" />
-          </Modal>
-        )}
-        {loading && <p>...Loading</p>}
-        {error && <p>{error}</p>}
-        <Searchbar onSubmit={this.updateSearch} />
-        {items.length > 0 && (
-          <ImageGallery items={items} showModal={this.showModal} />
-        )}
-        {search && loadMore && (
-          <button onClick={this.onLoadMore} className={s.Button}>
-            Load more
-          </button>
-        )}
-      </div>
-    );
-  }
-}
+
+  const onCloseModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <div className={s.App}>
+      {showModal && (
+        <Modal onClose={onCloseModal}>
+          <img src={largeImageURL} alt="" width="600" />
+        </Modal>
+      )}
+      {loading && <p>...Loading</p>}
+      {error && <p>{error}</p>}
+      <Searchbar onSubmit={updateSearch} />
+      {items.length > 0 && (
+        <ImageGallery items={items} showModal={onshowModal} />
+      )}
+      {search && loadMore && (
+        <button onClick={onLoadMore} className={s.Button}>
+          Load more
+        </button>
+      )}
+      {search && items.length === 0 && <p>no photos...</p>}
+    </div>
+  );
+};
 
 export default App;

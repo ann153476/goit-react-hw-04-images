@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import s from '../styles.module.css';
-
+console.log(s);
 class Searchbar extends Component {
   state = {
     search: '',
@@ -40,7 +40,7 @@ class Searchbar extends Component {
             required
           />
           <button className={s.SearchForm__button} type="submit">
-            <span className={s.SearchForm__button__label}></span>
+            <span className={s.SearchForm__button__label}>Search</span>
           </button>
         </form>
       </header>
