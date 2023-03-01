@@ -42,8 +42,11 @@ const App = () => {
     }
   }, [search, page]);
 
-  const updateSearch = search => {
-    setSearch(search);
+  const updateSearch = newSearch => {
+    if (newSearch === search) {
+      return;
+    }
+    setSearch(newSearch);
     setPage(1);
     setItems([]);
   };
@@ -68,18 +71,19 @@ const App = () => {
           <img src={largeImageURL} alt="" width="600" />
         </Modal>
       )}
-      {loading && <p>...Loading</p>}
+
       {error && <p>{error}</p>}
       <Searchbar onSubmit={updateSearch} />
       {items.length > 0 && (
         <ImageGallery items={items} showModal={onshowModal} />
       )}
-      {search && loadMore && (
+      {loading && <p>...Loading</p>}
+      {search && loadMore && items.length > 0 && (
         <button onClick={onLoadMore} className={s.Button}>
           Load more
         </button>
       )}
-      {search && items.length === 0 && <p>no photo...</p>}
+      {search && items.length === 0 && !loading && <p>no photo...</p>}
     </div>
   );
 };

@@ -14,6 +14,9 @@ const Modal = ({ onClose, children }) => {
 
   useEffect(() => {
     window.addEventListener('keydown', handleClose);
+    return () => {
+      window.removeEventListener('keydown', handleClose);
+    };
   });
 
   return createPortal(
